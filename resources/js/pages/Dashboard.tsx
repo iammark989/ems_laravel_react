@@ -29,7 +29,7 @@ const ChartCard = ({ title, canvasId }: { title: string; canvasId: string }) => 
 
 const Dashboard = () => {
   const chartsRef = useRef<Chart[]>([]);
-  const { auth } = usePage().props as any;
+  const { employeeCount } = usePage().props as any;
 
   useEffect(() => {
      
@@ -108,7 +108,7 @@ const Dashboard = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 mb-8">
-        <StatCard icon={Users} label="Total Employees" value={dashboardStats.totalEmployees} color="bg-primary/10 text-primary" />
+        <StatCard icon={Users} label="Total Employees" value={employeeCount.count} color="bg-primary/10 text-primary" />
         <StatCard icon={UserCheck} label="Present Today" value={dashboardStats.presentToday} color="bg-success/10 text-success" />
         <StatCard icon={UserX} label="Absent Today" value={dashboardStats.absentToday} color="bg-destructive/10 text-destructive" />
         <StatCard icon={DollarSign} label="Monthly Payroll" value={`₱${dashboardStats.monthlyPayroll.toLocaleString()}`} color="bg-info/10 text-info" />

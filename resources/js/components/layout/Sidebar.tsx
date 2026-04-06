@@ -67,6 +67,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const [expandedMenus, setExpandedMenus] = useState<string[]>(["Employee"]);
   const { url } = usePage();
   const { auth } = usePage().props as any;
+  const { position } = usePage().props as any;
 
   const toggleMenu = (label: string) => {
     setExpandedMenus((prev) =>
@@ -92,7 +93,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           <div key={item.label}>
             <button
               onClick={() => toggleMenu(item.label)}
-              className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sidebar-foreground/90 hover:bg-sidebar-accent transition-colors ${childActive ? "bg-sidebar-accent" : ""}`}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sky-800 hover:bg-sky-100 transition-colors ${childActive ? "bg-sky-200 text-sky-900" : ""}`}
             >
               <div className="flex items-center gap-3">
                 {item.icon}
@@ -107,9 +108,9 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                     key={child.path}
                     onClick={() => handleNavigate(child.path)}
                     className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-colors ${
-                      location.pathname === child.path
-                        ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium"
-                        : "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                      url === child.path
+                      ? "bg-sky-500 text-white font-medium"
+                      : "text-sky-700 hover:bg-sky-100 hover:text-sky-900"
                     }`}
                   >
                     {child.icon}
@@ -128,8 +129,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           onClick={() => handleNavigate(item.path!)}
           className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
             isActive
-              ? "bg-sidebar-primary text-sidebar-primary-foreground"
-              : "text-sidebar-foreground/90 hover:bg-sidebar-accent"
+              ? "bg-sky-500 text-white"
+              : "text-sky-700 hover:bg-sky-100"
           }`}
         >
           {item.icon}
@@ -147,34 +148,40 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-14 left-0 bottom-0 z-50 w-64 bg-sidebar overflow-y-auto transition-transform duration-300 lg:translate-x-0 ${
-          isOpen ? "translate-x-0 animate-slide-in" : "-translate-x-full"
-        }`}
-      >
+          className={`fixed top-14 left-0 bottom-0 z-50 w-64 
+          bg-sky-50 border-r border-sky-200
+          overflow-y-auto transition-transform duration-300 
+          lg:translate-x-0 ${
+            isOpen ? "translate-x-0 animate-slide-in" : "-translate-x-full"
+          }`}
+        >
         {/* Close button (mobile) */}
         <button onClick={onClose} className="absolute top-3 right-3 text-sidebar-foreground/80 hover:text-sidebar-foreground lg:hidden">
           <X className="w-5 h-5" />
         </button>
 
         {/* User Profile */}
-        <div className="p-6 flex flex-col items-center border-b border-sidebar-border">
-          <div className="w-16 h-16 rounded-full bg-sidebar-primary/20 border-2 border-sidebar-primary flex items-center justify-center mb-3">
-            <UserCircle className="w-10 h-10 text-sidebar-foreground" />
-          </div>
-          <p className="text-sidebar-foreground font-semibold text-sm">{ auth.user.name }</p>
-          <p className="text-sidebar-foreground/60 text-xs">{ auth.user.userlevel }</p>
+        <div className="p-6 flex flex-col items-center border-b border-sky-200">
+                    <img
+            src={`/storage/images/${auth.user.images}`}
+            alt="User Avatar"
+            className="w-16 h-16 rounded-full object-cover border-2 border-sky-500"
+            onError={(e) => (e.currentTarget.src = "/storage/images/fallback-image.jpg")}
+          />
+          <p className="text-sky-900 font-semibold text-sm">{ auth.user.name.toUpperCase() }</p>
+          <p className="text-sky-600 text-xs">{ position?.position.toUpperCase() }</p>
         </div>
 
         {/* Admin Menu */}
         <nav className="p-3 space-y-1">
-          <p className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+          <p className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-sky-500">
             Admin / HR Panel
           </p>
           {renderMenu(adminMenu)}
 
           <div className="my-3 border-t border-sidebar-border" />
 
-          <p className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
+          <p className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-sky-500">
             Employee Self-Service
           </p>
           {renderMenu(employeeMenu)}
@@ -182,7 +189,10 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
         {/* Logout */}
         <div className="p-3 mt-auto border-t border-sidebar-border">
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-destructive hover:bg-destructive/10 transition-colors text-sm font-medium">
+          <button
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-500 hover:bg-red-50 transition-colors text-sm font-medium"
+            onClick={() => router.post('/logout')}
+          >
             <LogOut className="w-5 h-5" />
             Logout
           </button>
@@ -191,5 +201,5 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     </>
   );
 };
-
+ 
 export default Sidebar;

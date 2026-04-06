@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Department;
+use App\Models\Position;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,7 +24,37 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'employeeID',
+        'status',
+        'userlevel',
+        'first_name',
+        'middle_name',
+        'last_name',
+        'suffix',
+        'address',
+        'position_id',
+        'department_id',
+        'date_hired',
+        'daily_rate',
+        'allowance',
+        'leave_bal_VL',
+        'leave_bal_SIL',
+        'sss',
+        'pagibig',
+        'philhealth',
+        'tin',
+        'images'
     ];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

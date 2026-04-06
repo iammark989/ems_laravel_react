@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('employeeID')->unique();
             $table->string('name')->unique();
             $table->string('email')->unique();;
             $table->string('images')->nullable(); 
@@ -20,7 +21,22 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('status')->default(true);
             $table->integer('userlevel')->default(1);
-            $table->string('employeeID')->unique();
+            $table->string('first_name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
+            $table->string('suffix')->nullable();
+            $table->string('address');
+          //  $table->string('position_id');
+           // $table->string('department_id');
+            $table->date('date_hired');
+            $table->decimal('daily_rate');
+            $table->decimal('allowance');
+            $table->decimal('leave_bal_VL');
+            $table->decimal('leave_bal_SIL');
+            $table->string('sss')->nullable();
+            $table->string('pagibig')->nullable();
+            $table->string('philhealth')->nullable();
+            $table->string('tin')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

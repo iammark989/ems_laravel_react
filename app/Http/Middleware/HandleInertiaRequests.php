@@ -2,6 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Companysetting;
+use App\Models\Department;
+use App\Models\Employeelist;
+use App\Models\Position;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -34,14 +38,24 @@ class HandleInertiaRequests extends Middleware
      * @return array<string, mixed>
      */
     public function share(Request $request): array
-    {
+    {      
+             $user = $request->user();
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+                    'flash' => [
+                        'success' => $request->session()->get('success'),
+                        'error' => $request->session()->get('error'),
+                    ],
+            'department' => $user ? Department::find($user->department_id) : null,
+            'position' => $user ? Position::find($user->position_id) : null,
+            
+             'company' => Companysetting::first(),    
         ];
+        
     }
 }
