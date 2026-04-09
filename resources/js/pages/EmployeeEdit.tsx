@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import React, { useState,useEffect, } from "react";
 import { Save } from "lucide-react";
 import { router,useForm,usePage } from "@inertiajs/react";
 import Swal from "sweetalert2";
@@ -32,7 +32,11 @@ const { employeeDetails,departments,positions } =  usePage().props as any;
   const [form, setForm] = useState({
    
   });
+  
+    const [isRFIDModalOpen, setRFIDModalOpen] = useState(false);
+    const [isFingerprintModalOpen, setFingerprintModalOpen] = useState(false);
 
+  
   type PageProps = {
     flash: {
       success?: string;
@@ -120,7 +124,7 @@ const employmentFields = [
   return (
     <div className="min-h-screen bg-blue-50/40 p-6">
       <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-        Employee Registration
+        Employee Details Update
       </h1>
 
       <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-8 max-w-5xl">
@@ -374,10 +378,88 @@ focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transi
             <Save className="w-4 h-4" />
             Save
           </button>
+          
         </form>
+            {/* Buttons */}
+      <div className="flex gap-4 mb-6 mt-5">
+        <button
+          onClick={() => setRFIDModalOpen(true)}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+        >
+          Register RFID
+        </button>
+        <button
+          onClick={() => setFingerprintModalOpen(true)}
+          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+        >
+          Register Fingerprint
+        </button>
       </div>
+      </div>
+       {/* RFID Modal */}
+      {isRFIDModalOpen && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md relative">
+            <h2 className="text-lg font-semibold mb-4">Register RFID Card</h2>
+            <input
+              type="text"
+              placeholder="Scan or enter RFID"
+              className="w-full border rounded-lg p-2 mb-4"
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setRFIDModalOpen(false)}
+                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition"
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Fingerprint Modal */}
+      {isFingerprintModalOpen && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md relative">
+            <h2 className="text-lg font-semibold mb-4">Register Fingerprint</h2>
+            <p className="mb-4 text-gray-600">
+              Place finger on scanner or enter fingerprint ID
+            </p>
+            <input
+              type="text"
+              placeholder="Fingerprint ID"
+              className="w-full border rounded-lg p-2 mb-4"
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setFingerprintModalOpen(false)}
+                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition"
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
+
+      
+
+
   );
+
+ 
 };
 
 export default EmployeeEdit;

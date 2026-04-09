@@ -120,7 +120,7 @@ const SettingsPayroll = () => {
     <div className="p-6 bg-gray-100 min-h-screen">
 
       <h1 className="text-2xl font-semibold mb-6">
-        Company Settings
+        Payroll Settings
       </h1>
 
       <div className="grid md:grid-cols-2 gap-6">

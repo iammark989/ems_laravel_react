@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('biometrics', function (Blueprint $table) {
+            $table->id();
+            $table->string('employeeID');
+            $table->string('finger_name');
+            $table->longText('fp_data');
+            $table->string('device_id')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->foreign('employeeID')->references('employeeID')->on('users')->onDelete('cascade');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('biometrics');
+    }
+};

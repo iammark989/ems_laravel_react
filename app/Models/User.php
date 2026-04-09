@@ -3,8 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Attendancelog;
 use App\Models\Department;
 use App\Models\Position;
+use App\Models\Rfidcard;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -45,6 +47,13 @@ class User extends Authenticatable
         'tin',
         'images'
     ];
+
+     public function rfidcard(){
+        return $this->hasMany(Rfidcard::class,'employeeID','employeeID');
+    }
+    public function attendancelog(){
+        return $this->hasMany(Attendancelog::class,'employeeID','employeeID');
+    }
 
     public function department()
     {

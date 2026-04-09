@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\SelfserviceController;
@@ -11,6 +12,12 @@ use Laravel\Fortify\Features;
 
 
 // GET //
+        // GOTO ATTENDANCE //
+Route::get('/attendance-login',[AttendanceController::class,'showAttendancePageB']);
+Route::get('/attendanceLogin',function () {
+                return Inertia::render('AttendanceLogin'); }
+                );
+
         // GO TO LOGIN PAGE //
 Route::get('/', [UserController::class,'dashboard'])->middleware('signInCheck');
 
@@ -35,7 +42,10 @@ Route::get('/employees/{employeeID}/edit',[EmployeeController::class,'employeeEd
 
         // Employee self-service //
 Route::get('/self-service/payslip',[SelfserviceController::class,'goToViewPayslip'])->middleware('signInCheck');
+Route::get('/viewpayslip',[PayrollController::class,'viewpayslip'])->middleware('signInCheck');
 
+Route::get('/self-service/attendance',[SelfserviceController::class,'goToViewAttendance'])->middleware('signInCheck');
+Route::get('/viewattendance',[SelfserviceController::class,'index'])->middleware('signInCheck');
 
 // POST //
                 // login //
@@ -51,7 +61,7 @@ Route::post('/employees/savechanges',[EmployeeController::class,'savechanges']);
                 // PAYROLL //
                 // routes/api.php
 Route::post('/payroll/upload',[PayrollController::class,'upload']);
-Route::get('/viewpayslip',[PayrollController::class,'viewpayslip'])->middleware('signInCheck');
+
 
                 //  SETTINGS  //
                 // add department and add position   //
