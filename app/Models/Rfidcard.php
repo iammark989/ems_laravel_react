@@ -13,7 +13,7 @@ class Rfidcard extends Model
 
     protected $fillable = [
         'employeeID',
-        'rfid_data',
+        'rfid',
         'is_active',
     ];
 

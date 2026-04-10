@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rfidcards', function (Blueprint $table) {
             $table->id();
             $table->string('employeeID');
-            $table->string('rfid_data')->unique();
+            $table->string('rfid')->unique();
             $table->boolean('is_active')->default(true);
             $table->foreign('employeeID')->references('employeeID')->on('users')->onDelete('cascade');
             $table->timestamps();

@@ -1,4 +1,4 @@
-import React, { useState,useEffect, } from "react";
+import React, { useState,useEffect,useRef } from "react";
 import { Save } from "lucide-react";
 import { router,useForm,usePage } from "@inertiajs/react";
 import Swal from "sweetalert2";
@@ -32,40 +32,102 @@ const { employeeDetails,departments,positions } =  usePage().props as any;
   const [form, setForm] = useState({
    
   });
-  
-    const [isRFIDModalOpen, setRFIDModalOpen] = useState(false);
-    const [isFingerprintModalOpen, setFingerprintModalOpen] = useState(false);
+    // for modals
+        const [isRFIDModalOpen, setRFIDModalOpen] = useState(false);
+        useEffect(() => {
+          const keepFocus = () => rfidInputRef.current?.focus();
+          window.addEventListener("click", keepFocus);
 
-  
+          return () => window.removeEventListener("click", keepFocus);
+        }, []);
+
+        const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+          handleRFIDScan(e as any);
+        }
+      };
+
+        const [isFingerprintModalOpen, setFingerprintModalOpen] = useState(false);
+        const rfidInputRef = useRef<HTMLInputElement>(null);
+        const [rfidStatus, setRfidStatus] = useState<string | null>(null);
+        const [isProcessing, setIsProcessing] = useState(false);
+        useEffect(() => {
+      if (isRFIDModalOpen) {
+        setTimeout(() => {
+          rfidInputRef.current?.focus();
+        }, 100);
+      }
+      }, [isRFIDModalOpen]);           
+              
+          const handleRFIDScan = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const value = e.target.value.trim();
+
+          if (!value) return;
+
+          setIsProcessing(true);
+          setRfidStatus(null);
+
+          router.post(
+            "/rfid/register", // your backend route
+            {
+              rfid: value,
+              employeeID: data.employeeID,
+            },
+            {
+              onSuccess: (page: any) => {
+
+                if (page.props.flash.success) {setRfidStatus("✅ RFID registered successfully");
+                              setTimeout(() => {
+                  setRFIDModalOpen(false);
+                }, 2000);
+              }
+              },
+              onError: (errors) => {
+                setRfidStatus("❌ RFID already in use or invalid");
+              },
+              onFinish: () => {
+                setIsProcessing(false);
+
+                // clear + refocus for next scan
+                if (rfidInputRef.current) {
+                  rfidInputRef.current.value = "";
+                  rfidInputRef.current.focus();
+                }
+              },
+            }
+          );
+        };
+
+
   type PageProps = {
     flash: {
       success?: string;
-      error?: string;
+      message?: string;
     };
   };
     const { flash } = usePage<PageProps>().props;
   
-  useEffect(() => {
-    if (flash.success) {
-      Swal.fire({
-    icon: "success",
-    title: "Employee Details Updated",
-    text: flash.success,
-    timer: 2000,
-    showConfirmButton: false,
-  });
-    }
+  //useEffect(() => {
+ //   if (flash.success) {
+ //     Swal.fire({
+ //   icon: "success",
+ //   title: "RFID Saved",
+ //   text: flash.message,
+ //   timer: 2000,
+ //   showConfirmButton: false,
+//  });
+ //   }
   
-    if (flash.error) {
-      Swal.fire({
-    icon: "error",
-    title: "Update Error",
-    text: flash.error,
-    timer: 2000,
-    showConfirmButton: false,
-  });
-    }
-  }, [flash]);
+//    if (!flash.success) {
+  //    Swal.fire({
+  ///  icon: "error",
+ //   title: "Update Error",
+ //   text: flash.message,
+ //   timer: 2000,
+//    showConfirmButton: false,
+//  });
+//    }
+//  }, [flash]);
 
   const [preview, setPreview] = useState<string | null>(`/storage/images/${employeeDetails.images}`);
 
@@ -115,7 +177,7 @@ const employmentFields = [
           console.error(errors);
         },
         onSuccess: () => {
-          console.log("Employee details update successfully");
+          //console.log("Employee details update successfully");
         },
       });
     
@@ -397,31 +459,51 @@ focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-blue-300 transi
       </div>
       </div>
        {/* RFID Modal */}
-      {isRFIDModalOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md relative">
-            <h2 className="text-lg font-semibold mb-4">Register RFID Card</h2>
-            <input
-              type="text"
-              placeholder="Scan or enter RFID"
-              className="w-full border rounded-lg p-2 mb-4"
-            />
-            <div className="flex justify-end gap-2">
+              {isRFIDModalOpen && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+            <div className="bg-white rounded-xl p-6 w-full max-w-md text-center">
+              
+              <h2 className="text-lg font-semibold mb-2">
+                Scan RFID Card
+              </h2>
+
+              <p className="text-gray-500 mb-4">
+                Please tap the RFID card on the scanner...
+              </p>
+
+              {/* Hidden Input */}
+              <input
+                ref={rfidInputRef}
+                type="text"
+                onKeyDown={handleKeyDown}
+                className="opacity-0 absolute"
+                autoFocus
+              />
+
+              {/* Loading */}
+              {isProcessing && (
+                <p className="text-blue-500 animate-pulse">
+                  Processing...
+                </p>
+              )}
+
+              {/* Result Message */}
+              {rfidStatus && (
+                <p className="mt-3 font-medium">
+                  {rfidStatus}
+                </p>
+              )}
+
+              {/* Close Button */}
               <button
                 onClick={() => setRFIDModalOpen(false)}
-                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition"
+                className="mt-6 px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
               >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-              >
-                Save
+                Close
               </button>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Fingerprint Modal */}
       {isFingerprintModalOpen && (

@@ -56,11 +56,16 @@ Route::post('/logout',[UserController::class,'logout']);
 Route::post('/register',[EmployeeController::class,'register']);
                 // employee save changes //
 Route::post('/employees/savechanges',[EmployeeController::class,'savechanges']);
+                //save RFID card //
+Route::post('/rfid/register',[AttendanceController::class,'addRfidCard']);
 
 
                 // PAYROLL //
                 // routes/api.php
 Route::post('/payroll/upload',[PayrollController::class,'upload']);
+
+                // ATTENDANCE
+Route::post('/attendance/log/rfid',[AttendanceController::class,'attendancelog']);
 
 
                 //  SETTINGS  //
