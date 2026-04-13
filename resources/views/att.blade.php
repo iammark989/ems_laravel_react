@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Login</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
 </head>
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
@@ -17,7 +17,14 @@
 
     <!-- Clock -->
     <div id="clock" class="text-center text-green-600 font-semibold text-lg md:text-xl mb-4"></div>
+                 
+                   <!-- error message -->
+            <div id="errorMessage">
+                <div id="message" class="m-0 px-3 py-2 text-sm text-red-700 text-center"></div>
+            </div>
 
+            <div id='background' class="inset-0 bg-center bg-contain bg-no-repeat"
+        style="background-image: url('/storage/images/scan.png');">
     <!-- Employee Info -->
     <div id="employeeInfo"
         class="flex flex-col md:flex-row items-center gap-6 opacity-0 translate-y-5 transition-all duration-500">
@@ -49,8 +56,11 @@
             </div>
 
         </div>
+
+    </div>    
     </div>
 
+    
 </div>
 
 <script>
@@ -59,12 +69,22 @@ const ename = document.getElementById('empName');
 const eid = document.getElementById('empID');
 const estat = document.getElementById('estat');
 const img = document.getElementById('picture');
+const message = document.getElementById('message');
 
 // Show animation
 function showEmployeeInfo() {
     const info = document.getElementById('employeeInfo');
+    const bg = document.getElementById('background');
     info.classList.remove('opacity-0', 'translate-y-5');
     info.classList.add('opacity-100', 'translate-y-0');
+    bg.style.removeProperty('background-image');
+}
+function showErrorMessage() {
+    const info = document.getElementById('errorMessage');
+    const bg = document.getElementById('background');
+    info.classList.remove('opacity-0', 'translate-y-5');
+    info.classList.add('opacity-100', 'translate-y-0');
+    bg.style.removeProperty('background-image');
 }
 
 // Always focus scanner
@@ -73,6 +93,7 @@ window.onload = () => scanInput.focus();
 
 // RFID Scan
 scanInput.addEventListener('change', async () => {
+    
     const scannedValue = scanInput.value.trim();
     if (!scannedValue) return;
 
@@ -91,11 +112,15 @@ scanInput.addEventListener('change', async () => {
         estat.textContent = result.status;
         ename.textContent = result.employee_name.toUpperCase();
         eid.textContent = result.employeeID;
-        img.src = result.image ?? '/fallback-image.jpg';
+        img.src = '/storage/images/' + result.image ?? '/storage/images//fallback-image.jpg';
 
         showEmployeeInfo();
 
         setTimeout(() => location.reload(), 5000);
+    }else if(!result.success){
+         message.textContent = 'Invalid RFID or employee not found.';
+         showErrorMessage();
+         setTimeout(() => location.reload(), 3000);
     }
 
     scanInput.value = '';

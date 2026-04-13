@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendancelog;
 use App\Models\Rfidcard;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -61,7 +62,7 @@ class AttendanceController extends Controller
                         
                             return response()->json([
                                 'success' => true,
-                                'employee_name' => $theUser->username,
+                                'employee_name' => $theUser->name,
                                 'status' => $status === 'clockIn' ? 'Time In' : 'Time Out',
                                 'image' => $theUser->images,
                                 'employeeID' => $theUser->employeeID,
@@ -72,7 +73,7 @@ class AttendanceController extends Controller
             
                 }
 
-            // RFID CARD
+            // RFID CARD add
     public function addRfidCard(Request $request){
         $incomingFields = $request->validate([
             'rfid' => 'required',

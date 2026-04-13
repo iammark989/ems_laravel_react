@@ -31,13 +31,13 @@ class AdminUserSeeder extends Seeder
 
 
         User::create([
-        'name' => 'developer',
-        'email' => 'markarvinvalenzuela@gmail.com',
+        'name' => 'admin developer',
+        'email' => 'administrator@admin.com',
         'employeeID' => '000',
         'status' => '1',
         'userlevel' => '10',
         'password' => Hash::make('P@ssword1!'),
-        'first_name' => 'developer',
+        'first_name' => 'admin',
         'middle_name' => '',
         'last_name' => 'developer',
         'suffix' => '',
