@@ -17,6 +17,7 @@ Route::get('/attendance-login',[AttendanceController::class,'showAttendancePageB
 Route::get('/attendanceLogin',function () {
                 return Inertia::render('AttendanceLogin'); }
                 );
+Route::get('/viewattendance/export',[SelfserviceController::class,'exportSelfAttendance']);
 
         // GO TO LOGIN PAGE //
 Route::get('/', [UserController::class,'dashboard'])->middleware('signInCheck');

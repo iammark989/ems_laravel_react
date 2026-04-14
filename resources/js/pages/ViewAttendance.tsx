@@ -49,8 +49,8 @@ export default function ViewAttendance() {
   const handleExport = () => {
     if (!dateFrom || !dateTo) return;
 
-    // Redirect to Laravel export route
-    window.location.href = `/attendance/export?dateFrom=${dateFrom}&dateTo=${dateTo}`;
+    // Redirect to Laravel export route 
+    window.location.href = `/viewattendance/export?dateFrom=${dateFrom}&dateTo=${dateTo}`;
   };
 
   return (
