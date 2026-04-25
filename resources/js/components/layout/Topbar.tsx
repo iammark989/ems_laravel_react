@@ -18,7 +18,7 @@ const Topbar = ({ onToggleSidebar }: TopbarProps) => {
       <div className="flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-sm 
           flex items-center justify-center">
-          <span className="text-white font-bold text-sm"><img className="w-9 h-9 rounded-full object-cover border-2 border-sky-500" src={`/storage/images/${company.logo}` } /></span>
+          <span className="text-white font-bold text-sm"><img className="w-9 h-9 rounded-full object-cover border-2 border-sky-500" src={`/images/${company.logo}` } /></span>
         </div>
 
         <span className="text-white font-semibold text-lg hidden sm:block">

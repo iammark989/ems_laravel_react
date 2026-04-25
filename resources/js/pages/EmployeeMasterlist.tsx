@@ -98,7 +98,7 @@ const EmployeeMasterlist = () => {
                   <td className="px-4 py-3 font-medium">{emp.employeeID}</td>
                   
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-3"><img src={`storage/images/${emp.images}`} alt={`${emp.first_name} ${emp.last_name}`} onError={(e) => (e.currentTarget.src = "storage/images/fallback-image.jpg")} className="w-10 h-10 rounded-full object-cover border"/> {emp.first_name} {emp.last_name} {emp.suffix}</div></td>
+                    <div className="flex items-center gap-3"><img src={`/images/${emp.images}`} alt={`${emp.first_name} ${emp.last_name}`} onError={(e) => (e.currentTarget.src = "/images/fallback-image.jpg")} className="w-10 h-10 rounded-full object-cover border"/> {emp.first_name} {emp.last_name} {emp.suffix}</div></td>
                   <td className="px-4 py-3 hidden md:table-cell">{emp.department?.department}</td>
                   <td className="px-4 py-3 hidden lg:table-cell">{emp.position?.position}</td>
                   <td className="px-4 py-3">

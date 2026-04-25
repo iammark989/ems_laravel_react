@@ -11,13 +11,12 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
 
-// GET //
         // GOTO ATTENDANCE //
 Route::get('/attendance-login',[AttendanceController::class,'showAttendancePageB']);
 Route::get('/attendanceLogin',function () {
                 return Inertia::render('AttendanceLogin'); }
                 );
-Route::get('/viewattendance/export',[SelfserviceController::class,'exportSelfAttendance']);
+
 
         // GO TO LOGIN PAGE //
 Route::get('/', [UserController::class,'dashboard'])->middleware('signInCheck');
@@ -26,29 +25,32 @@ Route::get('/login', function () {
     return Inertia::render('Login');
 });
         // Dashboard //
-Route::get('/dashboard',[UserController::class,'dashboard'])->middleware('signInCheck');
+Route::get('/dashboard',[UserController::class,'dashboard'])->middleware(['signInCheck','levels:5,10']);
        
         // go to settings //
-Route::get('/settings/payroll',[SettingsController::class,'index'])->middleware('signInCheck');
-Route::get('/settings/company',[SettingsController::class,'indexCompany'])->middleware('signInCheck');
+Route::get('/settings/payroll',[SettingsController::class,'index'])->middleware(['signInCheck','levels:5,10']);
+Route::get('/settings/company',[SettingsController::class,'indexCompany'])->middleware(['signInCheck','levels:5,10']);
 
         // Payroll Related Routes //
         // go to upload payroll //
-Route::get('/payroll/upload-payroll',function (){ return Inertia::render('PayrollUpload'); } )->middleware('signInCheck');
+Route::get('/payroll/upload-payroll',function (){ return Inertia::render('PayrollUpload'); } )->middleware(['signInCheck','levels:5,10']);
 
         // Employee Related Routes //
-Route::get('/employees',[EmployeeController::class,'index'])->middleware('signInCheck')->name('employeelist');
-Route::get('/employees/register',[EmployeeController::class,'registration'])->middleware('signInCheck')->name('employeeRegister');
-Route::get('/employees/{employeeID}/edit',[EmployeeController::class,'employeeEdit'])->middleware('signInCheck');
+Route::get('/employees',[EmployeeController::class,'index'])->middleware(['signInCheck','levels:5,10'])->name('employeelist');
+Route::get('/employees/register',[EmployeeController::class,'registration'])->middleware(['signInCheck','levels:5,10'])->name('employeeRegister');
+Route::get('/employees/{employeeID}/edit',[EmployeeController::class,'employeeEdit'])->middleware(['signInCheck','levels:5,10']);
+Route::get('/employees/attendance',[EmployeeController::class,'employeeAttendance'])->middleware(['signInCheck','levels:5,10']);
+Route::get('/employees/attendance/view',[EmployeeController::class,'viewAttendance'])->middleware(['signInCheck','levels:5,10']);
+Route::get('/employees/attendance/export',[EmployeeController::class,'exportAttendance'])->middleware(['signInCheck','levels:5,10']);
 
-        // Employee self-service //
+        // Employee self-service related routes//
 Route::get('/self-service/payslip',[SelfserviceController::class,'goToViewPayslip'])->middleware('signInCheck');
 Route::get('/viewpayslip',[PayrollController::class,'viewpayslip'])->middleware('signInCheck');
 
 Route::get('/self-service/attendance',[SelfserviceController::class,'goToViewAttendance'])->middleware('signInCheck');
 Route::get('/viewattendance',[SelfserviceController::class,'index'])->middleware('signInCheck');
+Route::get('/viewattendance/export',[SelfserviceController::class,'exportSelfAttendance']);
 
-// POST //
                 // login //
 Route::post('/login',[UserController::class,'login']);
                 // logout //

@@ -91,7 +91,12 @@ class SettingsController extends Controller
             if($settings){
                     // delete old logo
                     if ($request->hasFile('logo')) {
-                        Storage::disk('public')->delete('images/' . $settings->logo);
+                        //Storage::disk('public')->delete('images/' . $settings->logo);
+                        $path = public_path('images/' . $settings->logo);
+                            if ($user->images && file_exists($path)) {
+                                unlink($path);
+                            }
+
                     $filename = "company" . uniqid() . ".jpg" ;
                     $path = $request->file('logo')->storeAs('images',$filename, 'public');
                     $incomingFields['logo'] = $filename;

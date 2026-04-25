@@ -28,7 +28,7 @@ const CompanySettings = () => {
     tax_type: settings.tax_type || "1",
   });
 
-  const [preview, setPreview] = useState<string | null>(`/storage/images/${settings.logo}`);
+  const [preview, setPreview] = useState<string | null>(`/images/${settings.logo}`);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

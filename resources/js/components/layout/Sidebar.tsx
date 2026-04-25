@@ -26,7 +26,7 @@ const adminMenu: MenuItem[] = [
     label: "Employee", icon: <Users className="w-5 h-5" />,
     children: [
       { label: "Employee Masterlist", icon: <ClipboardList className="w-4 h-4" />, path: "/employees" },
-      { label: "Employee Attendance", icon: <Clock className="w-4 h-4" />, path: "/attendance" },
+      { label: "Employee Attendance", icon: <Clock className="w-4 h-4" />, path: "/employees/attendance" },
       { label: "Employee Registration", icon: <UserCircle className="w-4 h-4" />, path: "/employees/register" },
     ],
   },
@@ -163,10 +163,10 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         {/* User Profile */}
         <div className="p-6 flex flex-col items-center border-b border-sky-200">
                     <img
-            src={`/storage/images/${auth.user.images}`}
+            src={`/images/${auth.user.images}`}
             alt="User Avatar"
             className="w-16 h-16 rounded-full object-cover border-2 border-sky-500"
-            onError={(e) => (e.currentTarget.src = "/storage/images/fallback-image.jpg")}
+            onError={(e) => (e.currentTarget.src = "/images/fallback-image.jpg")}
           />
           <p className="text-sky-900 font-semibold text-sm">{ auth.user.name.toUpperCase() }</p>
           <p className="text-sky-600 text-xs">{ position?.position.toUpperCase() }</p>

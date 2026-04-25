@@ -129,7 +129,7 @@ const { employeeDetails,departments,positions } =  usePage().props as any;
 //    }
 //  }, [flash]);
 
-  const [preview, setPreview] = useState<string | null>(`/storage/images/${employeeDetails.images}`);
+  const [preview, setPreview] = useState<string | null>(`/images/${employeeDetails.images}`);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
